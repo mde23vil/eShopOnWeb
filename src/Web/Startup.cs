@@ -13,9 +13,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
+using Microsoft.eShopWeb.ApplicationCore.Services;
 using Microsoft.eShopWeb.Infrastructure.Data;
 using Microsoft.eShopWeb.Infrastructure.Identity;
 using Microsoft.eShopWeb.Web.Configuration;
+using Microsoft.eShopWeb.Web.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -112,6 +114,7 @@ namespace Microsoft.eShopWeb.Web
                                        .AddDefaultTokenProviders();
 
             services.AddScoped<ITokenClaimsService, IdentityTokenClaimService>();
+            services.AddScoped<IOrderReserverService, OrderReserverQueueService>();
 
             services.AddCoreServices(Configuration);
             services.AddWebServices(Configuration);
@@ -137,6 +140,7 @@ namespace Microsoft.eShopWeb.Web
             });
             services.AddHttpContextAccessor();
             services.AddHealthChecks();
+            services.AddHttpClient();
             services.Configure<ServiceConfig>(config =>
             {
                 config.Services = new List<ServiceDescriptor>(services);
